@@ -366,8 +366,8 @@
               <!-- Single message field — Formspree displays this as one clean block -->
               <input type="hidden" id="messageInput" name="message" value="" />
 
-              <!-- Formspree: sends confirmation copy to the contractor -->
-              <input type="hidden" id="replyToInput" name="_replyto" value="" />
+              <!-- Formspree: CC a copy to the contractor's email -->
+              <input type="hidden" id="ccInput" name="_cc" value="" />
 
               <!-- Formspree: set the email subject line -->
               <input type="hidden" id="subjectInput" name="_subject" value="New Octomaids Invoice Submission" />
@@ -788,9 +788,9 @@
 
       messageInput.value = message;
 
-      /* Send confirmation copy to the contractor's email */
+      /* CC a copy to the contractor's email */
       var contractorEmail = document.getElementById('invoiceEmail').value.trim();
-      document.getElementById('replyToInput').value = contractorEmail;
+      document.getElementById('ccInput').value = contractorEmail;
 
       /* ── Submit to Formspree ──────────────────────────── */
       submitBtn.disabled    = true;
