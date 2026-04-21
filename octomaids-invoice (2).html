@@ -308,7 +308,7 @@
 
       <!-- Main Form -->
       <div>
-        <form id="invoiceForm" class="card" action="https://formspree.io/f/xbdpyrny" method="POST">
+        <form id="invoiceForm" class="card" action="https://api.web3forms.com/submit" method="POST">
 
           <!-- ─── Spam Protection: Honeypot Fields ─────────────
                Completely hidden from real users via CSS.
@@ -363,14 +363,20 @@
                 <input id="invoiceEmail" name="03. Contractor Email" type="email" placeholder="name@example.com" required />
               </div>
 
-              <!-- Single message field — Formspree displays this as one clean block -->
+              <!-- Web3Forms access key -->
+              <input type="hidden" name="access_key" value="f2b45181-f4ed-4970-b47e-d597b5fa862d" />
+
+              <!-- Single message field — displayed as one clean block -->
               <input type="hidden" id="messageInput" name="message" value="" />
 
-              <!-- Formspree: CC a copy to the contractor's email -->
-              <input type="hidden" id="ccInput" name="_cc" value="" />
+              <!-- Web3Forms: CC a copy to the contractor's email -->
+              <input type="hidden" id="ccInput" name="cc" value="" />
 
-              <!-- Formspree: set the email subject line -->
-              <input type="hidden" id="subjectInput" name="_subject" value="New Octomaids Invoice Submission" />
+              <!-- Web3Forms: set the email subject line -->
+              <input type="hidden" id="subjectInput" name="subject" value="New Octomaids Invoice Submission" />
+
+              <!-- Web3Forms: disable their default thank you page -->
+              <input type="hidden" name="redirect" value="false" />
             </div>
           </div>
 
@@ -792,29 +798,29 @@
       var contractorEmail = document.getElementById('invoiceEmail').value.trim();
       document.getElementById('ccInput').value = contractorEmail;
 
-      /* ── Submit to Formspree ──────────────────────────── */
+      /* ── Submit to Web3Forms ─────────────────────────────── */
       submitBtn.disabled    = true;
       submitBtn.textContent = 'Submitting...';
 
       var formData = new FormData(invoiceForm);
 
-      fetch('https://formspree.io/f/xbdpyrny', {
+      fetch('https://api.web3forms.com/submit', {
         method:  'POST',
         body:    formData,
         headers: { 'Accept': 'application/json' }
       })
       .then(function (response) {
         return response.json().then(function (data) {
-          if (response.ok) {
+          if (response.ok && data.success) {
             showSuccessMessage();
           } else {
-            var errorMsg = (data && data.error) ? data.error : 'Unknown error (status ' + response.status + ')';
+            var errorMsg = (data && data.message) ? data.message : 'Unknown error (status ' + response.status + ')';
             throw new Error(errorMsg);
           }
         });
       })
       .catch(function (err) {
-        console.error('Formspree error:', err);
+        console.error('Web3Forms error:', err);
         submitBtn.disabled    = false;
         submitBtn.textContent = 'Submit Invoice';
         formMessage.style.display = 'block';
