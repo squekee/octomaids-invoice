@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -349,31 +350,31 @@
             <div class="form-grid">
               <div class="field">
                 <label for="contractorName">Contractor Name</label>
-                <input id="contractorName" name="contractorName" type="text" placeholder="Enter contractor name" required />
+                <input id="contractorName" name="1. Contractor Name" type="text" placeholder="Enter contractor name" required />
               </div>
 
               <div class="field">
                 <label for="companyName">Company Name</label>
-                <input id="companyName" name="companyName" type="text" placeholder="Enter company name" />
+                <input id="companyName" name="2. Company Name" type="text" placeholder="Enter company name" />
               </div>
 
               <div class="field full">
                 <label for="invoiceEmail">Contractor Email</label>
-                <input id="invoiceEmail" name="invoiceEmail" type="email" placeholder="name@example.com" required />
+                <input id="invoiceEmail" name="3. Contractor Email" type="email" placeholder="name@example.com" required />
               </div>
 
               <!-- Hidden computed totals (populated by JS) -->
-              <input type="hidden" id="jobCountInput"    name="Total Jobs"            value="0" />
-              <input type="hidden" id="totalJobsInput"   name="Total for All Jobs"    value="0.00" />
-              <input type="hidden" id="totalSixtyInput"  name="Total 60%"             value="0.00" />
-              <input type="hidden" id="finalTotalInput"  name="Final Total"           value="0.00" />
+              <input type="hidden" id="jobCountInput"    name="4. Total Jobs"          value="0" />
+              <input type="hidden" id="totalJobsInput"   name="5. Total for All Jobs"  value="0.00" />
+              <input type="hidden" id="totalSixtyInput"  name="6. Total 60%"           value="0.00" />
 
               <!-- Hidden dynamic summaries (built by JS on submit) -->
-              <input type="hidden" id="jobsSummaryInput"   name="Jobs Completed"        value="" />
-              <input type="hidden" id="tipsSummaryInput"   name="Tips"                  value="" />
-              <input type="hidden" id="cancelSummaryInput" name="Cancellations"         value="" />
-              <input type="hidden" id="totalTipsInput"     name="Total Tips"            value="0.00" />
-              <input type="hidden" id="totalCancelsInput"  name="Total Cancellations"   value="0.00" />
+              <input type="hidden" id="jobsSummaryInput"   name="7. Jobs Completed"    value="" />
+              <input type="hidden" id="tipsSummaryInput"   name="9. Tips"              value="" />
+              <input type="hidden" id="cancelSummaryInput" name="11. Cancellations"    value="" />
+              <input type="hidden" id="totalTipsInput"     name="8. Total Tips"        value="0.00" />
+              <input type="hidden" id="totalCancelsInput"  name="10. Total Cancellations" value="0.00" />
+              <input type="hidden" id="finalTotalInput"    name="12. Final Total"      value="0.00" />
 
               <!-- Formspree: sends confirmation copy to the contractor -->
               <input type="hidden" id="replyToInput" name="_replyto" value="" />
@@ -416,12 +417,12 @@
 
               <div class="field full">
                 <label for="notes">Notes</label>
-                <textarea id="notes" name="notes" rows="4" placeholder="Add any notes here..."></textarea>
+                <textarea id="notes" name="13. Notes" rows="4" placeholder="Add any notes here..."></textarea>
               </div>
 
               <div class="field full">
                 <label for="signature">Signature</label>
-                <textarea id="signature" name="signature" class="signature-box" placeholder="Type full name as signature"></textarea>
+                <textarea id="signature" name="14. Signature" class="signature-box" placeholder="Type full name as signature"></textarea>
               </div>
             </div>
 
