@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Octomaids Contractor Invoice</title>
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --line: #dbe3ee;
+      --brand: #1d4ed8;
+      --brand-dark: #1e40af;
+      --success: #0f766e;
+      --danger: #b91c1c;
+      --shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #f8fbff 0%, var(--bg) 100%);
+      color: var(--text);
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.55fr 0.95fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .card-body {
+      padding: 20px;
+    }
+
+    .section-title {
+      font-size: 1.05rem;
+      margin: 0 0 16px;
+      font-weight: 700;
+    }
+
+    .subtle {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-top: -4px;
+      margin-bottom: 16px;
+      line-height: 1.45;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-size: 0.92rem;
+      font-weight: 700;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      min-height: 46px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 16px;
+      background: #fff;
+      color: var(--text);
+    }
+
+    input:focus,
+    textarea:focus {
+      outline: 3px solid rgba(29, 78, 216, 0.14);
+      border-color: var(--brand);
+    }
+
+    .jobs-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .job-row {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+      background: #fbfdff;
+    }
+
+    .job-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 0.9fr 0.8fr auto;
+      gap: 10px;
+      align-items: end;
+    }
+
+    .adjustment-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 0.8fr auto;
+      gap: 10px;
+      align-items: end;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 0.96rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.05s ease, opacity 0.2s ease;
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    .btn-primary {
+      background: var(--brand);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--brand-dark);
+    }
+
+    .btn-secondary {
+      background: #eff6ff;
+      color: var(--brand-dark);
+      border: 1px solid #c7dbff;
+    }
+
+    .btn-danger {
+      background: #fef2f2;
+      color: var(--danger);
+      border: 1px solid #fecaca;
+      min-width: 44px;
+      min-height: 46px;
+      padding: 0 12px;
+    }
+
+    .totals-card {
+      position: sticky;
+      top: 20px;
+    }
+
+    .summary-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 12px;
+      font-size: 0.98rem;
+    }
+
+    .summary-item strong:last-child {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .summary-total {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      color: #14532d;
+      border-radius: 14px;
+      padding: 15px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+      font-size: 1.08rem;
+      font-weight: 800;
+    }
+
+    .signature-box {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .footer-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    /* ─── Honeypot Traps (never visible to real users) ───── */
+    .hp-field {
+      opacity: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 0;
+      width: 0;
+      z-index: -1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .totals-card {
+        position: static;
+      }
+    }
+
+    @media (max-width: 720px) {
+      body {
+        padding: 12px;
+      }
+
+      .card-body {
+        padding: 16px;
+      }
+
+      .form-grid,
+      .job-grid,
+      .adjustment-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .job-row {
+        padding: 12px;
+      }
+
+      .btn-danger,
+      .footer-actions button,
+      .btn-row button {
+        width: 100%;
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        box-shadow: none;
+      }
+
+      .btn-row,
+      .footer-actions,
+      .btn-danger {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="grid">
+
+      <!-- Main Form -->
+      <div>
+        <form id="invoiceForm" class="card" action="https://formspree.io/f/xbdpyrny" method="POST">
+
+          <!-- ─── Spam Protection: Honeypot Fields ─────────────
+               Completely hidden from real users via CSS.
+               Bots that auto-fill all inputs will be blocked.
+          ──────────────────────────────────────────────────── -->
+
+          <!-- Trap 1: classic field bots auto-fill -->
+          <div class="hp-field" aria-hidden="true">
+            <label for="website">Website</label>
+            <input type="text" id="website" name="website" value="" autocomplete="off" tabindex="-1" />
+          </div>
+
+          <!-- Trap 2: looks like a real confirmation field to bots -->
+          <div class="hp-field" aria-hidden="true">
+            <label for="email_confirm">Confirm Email</label>
+            <input type="email" id="email_confirm" name="email_confirm" value="" autocomplete="off" tabindex="-1" />
+          </div>
+
+          <!-- Trap 3: bots fill any tel field they find -->
+          <div class="hp-field" aria-hidden="true">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone" value="" autocomplete="off" tabindex="-1" />
+          </div>
+
+          <!-- Trap 4: bots target textareas for injection -->
+          <div class="hp-field" aria-hidden="true">
+            <label for="comments">Comments</label>
+            <textarea id="comments" name="comments" autocomplete="off" tabindex="-1"></textarea>
+          </div>
+
+          <!-- Trap 5: timing token — bots submit instantly -->
+          <input type="hidden" id="formLoadTime" name="form_load_time" value="" />
+
+          <!-- Contractor Information -->
+          <div class="card-body">
+            <h2 class="section-title">Contractor Information</h2>
+            <p class="subtle">Fill out the details below, then add each job cleaned during the invoice period.</p>
+
+            <div class="form-grid">
+              <div class="field">
+                <label for="contractorName">Contractor Name</label>
+                <input id="contractorName" name="contractorName" type="text" placeholder="Enter contractor name" required />
+              </div>
+
+              <div class="field">
+                <label for="companyName">Company Name</label>
+                <input id="companyName" name="companyName" type="text" placeholder="Enter company name" />
+              </div>
+
+              <div class="field full">
+                <label for="invoiceEmail">Contractor Email</label>
+                <input id="invoiceEmail" name="invoiceEmail" type="email" placeholder="name@example.com" required />
+              </div>
+
+              <!-- Hidden computed totals (populated by JS) -->
+              <input type="hidden" id="jobCountInput"    name="Total Jobs"            value="0" />
+              <input type="hidden" id="totalJobsInput"   name="Total for All Jobs"    value="0.00" />
+              <input type="hidden" id="totalSixtyInput"  name="Total 60%"             value="0.00" />
+              <input type="hidden" id="finalTotalInput"  name="Final Total"           value="0.00" />
+
+              <!-- Hidden dynamic summaries (built by JS on submit) -->
+              <input type="hidden" id="jobsSummaryInput"   name="Jobs Completed"        value="" />
+              <input type="hidden" id="tipsSummaryInput"   name="Tips"                  value="" />
+              <input type="hidden" id="cancelSummaryInput" name="Cancellations"         value="" />
+              <input type="hidden" id="totalTipsInput"     name="Total Tips"            value="0.00" />
+              <input type="hidden" id="totalCancelsInput"  name="Total Cancellations"   value="0.00" />
+
+              <!-- Formspree: sends confirmation copy to the contractor -->
+              <input type="hidden" id="replyToInput" name="_replyto" value="" />
+
+              <!-- Formspree: set the email subject line -->
+              <input type="hidden" id="subjectInput" name="_subject" value="New Octomaids Invoice Submission" />
+            </div>
+          </div>
+
+          <!-- Jobs Completed -->
+          <div class="card-body" style="border-top: 1px solid var(--line);">
+            <h2 class="section-title">Jobs Completed</h2>
+            <p class="subtle">Add one row for each job. Customer totals are added automatically.</p>
+            <div id="jobsWrap" class="jobs-wrap"></div>
+            <div class="btn-row">
+              <button type="button" class="btn-primary" id="addJobBtn">+ Add Another Job</button>
+            </div>
+          </div>
+
+          <!-- Adjustments -->
+          <div class="card-body" style="border-top: 1px solid var(--line);">
+            <h2 class="section-title">Adjustments</h2>
+            <div class="form-grid">
+
+              <div class="field full">
+                <label>Tips</label>
+                <div id="tipsWrap" class="jobs-wrap"></div>
+                <div class="btn-row">
+                  <button type="button" class="btn-primary" id="addTipBtn">+ Add Tip Entry</button>
+                </div>
+              </div>
+
+              <div class="field full">
+                <label>Job Cancellations</label>
+                <div id="cancellationsWrap" class="jobs-wrap"></div>
+                <div class="btn-row">
+                  <button type="button" class="btn-primary" id="addCancellationBtn">+ Add Cancellation Entry</button>
+                </div>
+              </div>
+
+              <div class="field full">
+                <label for="notes">Notes</label>
+                <textarea id="notes" name="notes" rows="4" placeholder="Add any notes here..."></textarea>
+              </div>
+
+              <div class="field full">
+                <label for="signature">Signature</label>
+                <textarea id="signature" name="signature" class="signature-box" placeholder="Type full name as signature"></textarea>
+              </div>
+            </div>
+
+            <div class="footer-actions">
+              <button type="submit"  class="btn-primary"   id="submitBtn">Submit Invoice</button>
+              <button type="button"  class="btn-secondary" id="printBtn">Print / Save as PDF</button>
+              <button type="reset"   class="btn-secondary">Clear Form</button>
+            </div>
+
+            <div id="formMessage" class="subtle" style="display: none; margin-top: 14px;"></div>
+          </div>
+
+        </form>
+      </div>
+
+      <!-- Invoice Summary Sidebar -->
+      <aside class="card totals-card">
+        <div class="card-body">
+          <h2 class="section-title">Invoice Summary</h2>
+          <div class="summary-list">
+            <div class="summary-item">
+              <strong>Total Jobs</strong>
+              <strong id="jobCount">0</strong>
+            </div>
+            <div class="summary-item">
+              <strong>Total for All Jobs</strong>
+              <strong id="totalJobs">$0.00</strong>
+            </div>
+            <div class="summary-item">
+              <strong>Total 60%</strong>
+              <strong id="totalSixty">$0.00</strong>
+            </div>
+            <div class="summary-item">
+              <strong>Total Tips</strong>
+              <strong id="totalTips">$0.00</strong>
+            </div>
+            <div class="summary-item">
+              <strong>Total Cancellations</strong>
+              <strong id="totalCancellations">$0.00</strong>
+            </div>
+          </div>
+          <div class="summary-total">
+            <span>Final Total</span>
+            <span id="finalTotal">$0.00</span>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var PAY_RATE = 0.60;
+
+    /* ─── Spam Protection ─────────────────────────────────── */
+    var MINIMUM_FILL_SECONDS = 5;
+    var HONEYPOT_FIELDS = ['website', 'email_confirm', 'phone', 'comments'];
+
+    /* Stamp load time for timing check */
+    var formLoadTimestamp = Math.floor(Date.now() / 1000);
+    document.getElementById('formLoadTime').value = String(formLoadTimestamp);
+
+    /* ─── DOM References ──────────────────────────────────── */
+    var invoiceForm       = document.getElementById('invoiceForm');
+    var jobsWrap          = document.getElementById('jobsWrap');
+    var tipsWrap          = document.getElementById('tipsWrap');
+    var cancellationsWrap = document.getElementById('cancellationsWrap');
+    var submitBtn         = document.getElementById('submitBtn');
+    var printBtn          = document.getElementById('printBtn');
+    var formMessage       = document.getElementById('formMessage');
+
+    var jobCountInput     = document.getElementById('jobCountInput');
+    var totalJobsInput    = document.getElementById('totalJobsInput');
+    var totalSixtyInput   = document.getElementById('totalSixtyInput');
+    var finalTotalInput   = document.getElementById('finalTotalInput');
+    var jobsSummaryInput  = document.getElementById('jobsSummaryInput');
+    var tipsSummaryInput  = document.getElementById('tipsSummaryInput');
+    var cancelSummaryInput = document.getElementById('cancelSummaryInput');
+    var totalTipsInput    = document.getElementById('totalTipsInput');
+    var totalCancelsInput = document.getElementById('totalCancelsInput');
+    var subjectInput      = document.getElementById('subjectInput');
+
+    var jobCountEl            = document.getElementById('jobCount');
+    var totalJobsEl           = document.getElementById('totalJobs');
+    var totalSixtyEl          = document.getElementById('totalSixty');
+    var totalTipsEl           = document.getElementById('totalTips');
+    var totalCancellationsEl  = document.getElementById('totalCancellations');
+    var finalTotalEl          = document.getElementById('finalTotal');
+
+    /* ─── Helpers ─────────────────────────────────────────── */
+    function formatCurrency(value) {
+      return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD'
+      }).format(Number(value) || 0);
+    }
+
+    /* ─── Success Screen ──────────────────────────────────── */
+    function showSuccessMessage() {
+      invoiceForm.style.display = 'none';
+
+      var summaryCard = document.querySelector('.totals-card');
+      if (summaryCard) summaryCard.style.display = 'none';
+
+      formMessage.style.display      = 'block';
+      formMessage.style.color        = 'var(--success)';
+      formMessage.style.background   = '#f0fdf4';
+      formMessage.style.border       = '1px solid #bbf7d0';
+      formMessage.style.padding      = '20px';
+      formMessage.style.borderRadius = '14px';
+      formMessage.style.marginTop    = '40px';
+      formMessage.style.fontSize     = '1rem';
+      formMessage.style.lineHeight   = '1.6';
+      formMessage.textContent        = 'Invoice submitted successfully.';
+
+      var grid = document.querySelector('.grid');
+      if (grid && formMessage.parentElement !== grid) {
+        grid.appendChild(formMessage);
+      }
+
+      formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    /* ─── Row Factories ───────────────────────────────────── */
+    function createJobRow(data) {
+      data = data || {};
+      var row = document.createElement('div');
+      row.className = 'job-row';
+      row.innerHTML = [
+        '<div class="job-grid">',
+        '  <div class="field">',
+        '    <label>Customer Name</label>',
+        '    <input type="text" class="job-customer" placeholder="Customer name" />',
+        '  </div>',
+        '  <div class="field">',
+        '    <label>Date of Job</label>',
+        '    <input type="date" class="job-date" />',
+        '  </div>',
+        '  <div class="field">',
+        '    <label>Total</label>',
+        '    <input type="number" class="job-amount" min="0" step="0.01" placeholder="0.00" />',
+        '  </div>',
+        '  <button type="button" class="btn-danger remove-job">Remove</button>',
+        '</div>'
+      ].join('');
+
+      var customerInput = row.querySelector('.job-customer');
+      var dateInput     = row.querySelector('.job-date');
+      var amountInput   = row.querySelector('.job-amount');
+      var removeBtn     = row.querySelector('.remove-job');
+
+      if (data.customer) customerInput.value = data.customer;
+      if (data.date)     dateInput.value     = data.date;
+      if (data.amount !== undefined) amountInput.value = data.amount;
+
+      [customerInput, dateInput, amountInput].forEach(function (input) {
+        input.addEventListener('input',  updateTotals);
+        input.addEventListener('change', updateTotals);
+      });
+
+      removeBtn.addEventListener('click', function () {
+        row.remove();
+        updateTotals();
+      });
+
+      jobsWrap.appendChild(row);
+      updateTotals();
+    }
+
+    function createAdjustmentRow(type, data) {
+      data = data || {};
+      var container = type === 'tip' ? tipsWrap : cancellationsWrap;
+
+      var row = document.createElement('div');
+      row.className = 'job-row adjustment-row';
+      row.dataset.adjustmentType = type;
+      row.innerHTML = [
+        '<div class="adjustment-grid">',
+        '  <div class="field">',
+        '    <label>Customer Name</label>',
+        '    <input type="text" class="adj-customer" placeholder="Customer name" />',
+        '  </div>',
+        '  <div class="field">',
+        '    <label>Amount</label>',
+        '    <input type="number" class="adj-amount" min="0" step="0.01" placeholder="0.00" />',
+        '  </div>',
+        '  <button type="button" class="btn-danger remove-adj">Remove</button>',
+        '</div>'
+      ].join('');
+
+      var customerInput = row.querySelector('.adj-customer');
+      var amountInput   = row.querySelector('.adj-amount');
+      var removeBtn     = row.querySelector('.remove-adj');
+
+      if (data.customer) customerInput.value = data.customer;
+      if (data.amount !== undefined) amountInput.value = data.amount;
+
+      [customerInput, amountInput].forEach(function (input) {
+        input.addEventListener('input',  updateTotals);
+        input.addEventListener('change', updateTotals);
+      });
+
+      removeBtn.addEventListener('click', function () {
+        row.remove();
+        updateTotals();
+      });
+
+      container.appendChild(row);
+      updateTotals();
+    }
+
+    /* ─── Data Aggregators ────────────────────────────────── */
+    function getJobAmounts() {
+      return Array.from(jobsWrap.querySelectorAll('.job-amount'))
+        .map(function (input) { return parseFloat(input.value) || 0; });
+    }
+
+    function getAdjustmentTotal(type) {
+      var container = type === 'tip' ? tipsWrap : cancellationsWrap;
+      return Array.from(container.querySelectorAll('.adj-amount'))
+        .map(function (input) { return parseFloat(input.value) || 0; })
+        .reduce(function (sum, val) { return sum + val; }, 0);
+    }
+
+    function getNonEmptyJobCount() {
+      return Array.from(jobsWrap.querySelectorAll('.job-row')).filter(function (row) {
+        var customer = row.querySelector('.job-customer').value.trim();
+        var date     = row.querySelector('.job-date').value.trim();
+        var amount   = parseFloat(row.querySelector('.job-amount').value) || 0;
+        return customer || date || amount > 0;
+      }).length;
+    }
+
+    /* Build plain-text summary for jobs — one line per job */
+    function buildJobsSummary() {
+      var lines = [];
+      Array.from(jobsWrap.querySelectorAll('.job-row')).forEach(function (row, i) {
+        var customer = row.querySelector('.job-customer').value.trim();
+        var date     = row.querySelector('.job-date').value.trim();
+        var amount   = parseFloat(row.querySelector('.job-amount').value) || 0;
+        if (customer || date || amount > 0) {
+          lines.push(
+            (i + 1) + '. ' +
+            (customer || 'No name') + ' | ' +
+            (date     || 'No date') + ' | ' +
+            formatCurrency(amount)
+          );
+        }
+      });
+      return lines.length ? lines.join('; ') : 'None';
+    }
+
+    /* Build plain-text summary for tips or cancellations */
+    function buildAdjustmentSummary(type) {
+      var container = type === 'tip' ? tipsWrap : cancellationsWrap;
+      var lines = [];
+      Array.from(container.querySelectorAll('.adjustment-row')).forEach(function (row, i) {
+        var customer = row.querySelector('.adj-customer').value.trim();
+        var amount   = parseFloat(row.querySelector('.adj-amount').value) || 0;
+        if (customer || amount > 0) {
+          lines.push(
+            (i + 1) + '. ' +
+            (customer || 'No name') + ' | ' +
+            formatCurrency(amount)
+          );
+        }
+      });
+      return lines.length ? lines.join('; ') : 'None';
+    }
+
+    /* ─── Totals Updater ──────────────────────────────────── */
+    function updateTotals() {
+      var totalJobs        = getJobAmounts().reduce(function (s, v) { return s + v; }, 0);
+      var totalSixty       = totalJobs * PAY_RATE;
+      var totalTips        = getAdjustmentTotal('tip');
+      var totalCancels     = getAdjustmentTotal('cancellation');
+      var finalTotal       = totalSixty + totalTips + totalCancels;
+      var nonEmptyJobCount = getNonEmptyJobCount();
+
+      /* Update sidebar */
+      jobCountEl.textContent           = String(nonEmptyJobCount);
+      totalJobsEl.textContent          = formatCurrency(totalJobs);
+      totalSixtyEl.textContent         = formatCurrency(totalSixty);
+      totalTipsEl.textContent          = formatCurrency(totalTips);
+      totalCancellationsEl.textContent = formatCurrency(totalCancels);
+      finalTotalEl.textContent         = formatCurrency(finalTotal);
+
+      /* Update hidden fields */
+      jobCountInput.value    = String(nonEmptyJobCount);
+      totalJobsInput.value   = formatCurrency(totalJobs);
+      totalSixtyInput.value  = formatCurrency(totalSixty);
+      totalTipsInput.value   = formatCurrency(totalTips);
+      totalCancelsInput.value = formatCurrency(totalCancels);
+      finalTotalInput.value  = formatCurrency(finalTotal);
+
+      /* Update email subject with contractor name if available */
+      var contractorName = document.getElementById('contractorName').value.trim();
+      subjectInput.value = contractorName
+        ? 'New Octomaids Invoice - ' + contractorName
+        : 'New Octomaids Invoice Submission';
+    }
+
+    /* ─── Event Listeners ─────────────────────────────────── */
+    document.getElementById('addJobBtn').addEventListener('click', function () { createJobRow(); });
+    document.getElementById('addTipBtn').addEventListener('click', function () { createAdjustmentRow('tip'); });
+    document.getElementById('addCancellationBtn').addEventListener('click', function () { createAdjustmentRow('cancellation'); });
+
+    ['contractorName', 'companyName', 'invoiceEmail', 'notes', 'signature'].forEach(function (id) {
+      document.getElementById(id).addEventListener('input', updateTotals);
+    });
+
+    printBtn.addEventListener('click', function () { window.print(); });
+
+    /* ─── Submit Handler ──────────────────────────────────── */
+    invoiceForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      /* Honeypot check — trap fields must be empty */
+      var spamDetected = false;
+      HONEYPOT_FIELDS.forEach(function (fieldName) {
+        var field = document.querySelector('[name="' + fieldName + '"]');
+        if (field && field.value.trim() !== '') spamDetected = true;
+      });
+
+      /* Timing check — reject instant bot submissions */
+      var elapsed = Math.floor(Date.now() / 1000) - formLoadTimestamp;
+      if (elapsed < MINIMUM_FILL_SECONDS) spamDetected = true;
+
+      if (spamDetected) {
+        showSuccessMessage();
+        return;
+      }
+
+      /* ── Build all summaries and populate hidden fields ── */
+      updateTotals();
+      jobsSummaryInput.value   = buildJobsSummary();
+      tipsSummaryInput.value   = buildAdjustmentSummary('tip');
+      cancelSummaryInput.value = buildAdjustmentSummary('cancellation');
+
+      /* Send confirmation copy to the contractor's email */
+      var contractorEmail = document.getElementById('invoiceEmail').value.trim();
+      document.getElementById('replyToInput').value = contractorEmail;
+
+      /* ── Submit to Formspree ──────────────────────────── */
+      submitBtn.disabled    = true;
+      submitBtn.textContent = 'Submitting...';
+
+      var formData = new FormData(invoiceForm);
+
+      fetch('https://formspree.io/f/xbdpyrny', {
+        method:  'POST',
+        body:    formData,
+        headers: { 'Accept': 'application/json' }
+      })
+      .then(function (response) {
+        return response.json().then(function (data) {
+          if (response.ok) {
+            showSuccessMessage();
+          } else {
+            var errorMsg = (data && data.error) ? data.error : 'Unknown error (status ' + response.status + ')';
+            throw new Error(errorMsg);
+          }
+        });
+      })
+      .catch(function (err) {
+        console.error('Formspree error:', err);
+        submitBtn.disabled    = false;
+        submitBtn.textContent = 'Submit Invoice';
+        formMessage.style.display = 'block';
+        formMessage.style.color   = 'var(--danger)';
+        formMessage.textContent   = 'Error: ' + err.message;
+      });
+    });
+
+    /* ─── Reset Handler ───────────────────────────────────── */
+    invoiceForm.addEventListener('reset', function () {
+      setTimeout(function () {
+        jobsWrap.innerHTML          = '';
+        tipsWrap.innerHTML          = '';
+        cancellationsWrap.innerHTML = '';
+        createJobRow();
+        createJobRow();
+        createAdjustmentRow('tip');
+        createAdjustmentRow('cancellation');
+        updateTotals();
+      }, 0);
+    });
+
+    /* ─── Initialise ──────────────────────────────────────── */
+    createJobRow();
+    createJobRow();
+    createAdjustmentRow('tip');
+    createAdjustmentRow('cancellation');
+    updateTotals();
+
+  }); // end DOMContentLoaded
+  </script>
+</body>
+</html>
