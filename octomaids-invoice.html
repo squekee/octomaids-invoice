@@ -360,7 +360,7 @@
 
               <div class="field full">
                 <label for="invoiceEmail">Contractor Email</label>
-                <input id="invoiceEmail" name="03. Contractor Email" type="email" placeholder="name@example.com" required />
+                <input id="invoiceEmail" name="email" type="email" placeholder="name@example.com" required />
               </div>
 
               <!-- Web3Forms access key -->
@@ -368,9 +368,6 @@
 
               <!-- Single message field — displayed as one clean block -->
               <input type="hidden" id="messageInput" name="message" value="" />
-
-              <!-- Web3Forms: autoresponder sends a copy to this email address -->
-              <input type="hidden" id="emailInput" name="email" value="" />
 
               <!-- Web3Forms: set the email subject line -->
               <input type="hidden" id="subjectInput" name="subject" value="New Octomaids Invoice Submission" />
@@ -794,19 +791,12 @@
 
       messageInput.value = message;
 
-      /* Mirror contractor email into Web3Forms email field for autoresponder */
-      var contractorEmail = document.getElementById('invoiceEmail').value.trim();
-      document.getElementById('emailInput').value = contractorEmail;
-
       /* ── Submit to Web3Forms ─────────────────────────────── */
       submitBtn.disabled    = true;
       submitBtn.textContent = 'Submitting...';
 
       /* Build FormData AFTER all hidden fields are populated */
       var formData = new FormData(invoiceForm);
-
-      /* Explicitly append email again to guarantee it's in the payload */
-      formData.set('email', contractorEmail);
 
       fetch('https://api.web3forms.com/submit', {
         method:  'POST',
