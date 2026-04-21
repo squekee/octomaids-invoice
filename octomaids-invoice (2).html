@@ -851,6 +851,21 @@
     updateTotals();
 
   }); // end DOMContentLoaded
+
+  /* ─── Auto-resize: tells the WordPress iframe to match our height ── */
+  function sendHeight() {
+    var height = document.body.scrollHeight;
+    window.parent.postMessage({ frameHeight: height }, '*');
+  }
+
+  /* Send height on load and whenever content changes */
+  window.addEventListener('load', sendHeight);
+  window.addEventListener('resize', sendHeight);
+
+  /* Also watch for DOM changes (e.g. adding job rows) */
+  var resizeObserver = new ResizeObserver(sendHeight);
+  resizeObserver.observe(document.body);
+
   </script>
 </body>
 </html>
