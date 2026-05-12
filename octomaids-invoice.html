@@ -5,462 +5,619 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Octomaids Contractor Invoice</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #f6f8fb;
-      --card: #ffffff;
-      --text: #1f2937;
-      --muted: #6b7280;
-      --line: #dbe3ee;
-      --brand: #1d4ed8;
-      --brand-dark: #1e40af;
-      --success: #0f766e;
-      --danger: #b91c1c;
-      --shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
-      --radius: 18px;
+      --bg:           #f5f7fa;
+      --surface:      #ffffff;
+      --surface2:     #f0f2f7;
+      --border:       #e2e6ef;
+      --border-light: #c8d0e0;
+      --text:         #1c2434;
+      --muted:        #64748b;
+      --accent:       #2563eb;
+      --accent-dark:  #1d4ed8;
+      --accent-glow:  rgba(37, 99, 235, 0.08);
+      --success:      #059669;
+      --success-bg:   rgba(5, 150, 105, 0.08);
+      --danger:       #dc2626;
+      --danger-bg:    rgba(220, 38, 38, 0.07);
+      --radius:       12px;
+      --radius-sm:    8px;
+      --font:         'DM Sans', sans-serif;
+      --mono:         'DM Mono', monospace;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: linear-gradient(180deg, #f8fbff 0%, var(--bg) 100%);
+      font-family: var(--font);
+      background: var(--bg);
       color: var(--text);
-      padding: 20px;
+      padding: 24px 20px 40px;
+      min-height: 100vh;
     }
 
-    .container {
-      max-width: 1080px;
-      margin: 0 auto;
+    /* ─── Header ──────────────────────────────────────────── */
+    .header {
+      text-align: center;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
     }
 
-    .grid {
+    .header-sub {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    /* ─── Layout ──────────────────────────────────────────── */
+    .container { max-width: 1100px; margin: 0 auto; }
+
+    .layout {
       display: grid;
-      grid-template-columns: 1.55fr 0.95fr;
-      gap: 18px;
+      grid-template-columns: 1fr 320px;
+      gap: 20px;
       align-items: start;
     }
 
+    /* ─── Cards ───────────────────────────────────────────── */
     .card {
-      background: var(--card);
-      border: 1px solid var(--line);
+      background: var(--surface);
+      border: 1px solid var(--border);
       border-radius: var(--radius);
-      box-shadow: var(--shadow);
       overflow: hidden;
     }
 
-    .card-body {
-      padding: 20px;
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface2);
     }
 
-    .section-title {
-      font-size: 1.05rem;
-      margin: 0 0 16px;
+    .step-badge {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #ffffff;
       font-weight: 700;
+      font-size: 0.82rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
 
-    .subtle {
+    .card-header-text h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+
+    .card-header-text p {
+      font-size: 0.82rem;
       color: var(--muted);
-      font-size: 0.95rem;
-      margin-top: -4px;
-      margin-bottom: 16px;
-      line-height: 1.45;
+      margin-top: 2px;
     }
 
+    .card-body { padding: 24px; }
+
+    /* ─── Form Elements ───────────────────────────────────── */
     .form-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
     }
 
     .field {
       display: flex;
       flex-direction: column;
-      gap: 7px;
+      gap: 8px;
     }
 
-    .field.full {
-      grid-column: 1 / -1;
-    }
+    .field.full { grid-column: 1 / -1; }
 
     label {
-      font-size: 0.92rem;
-      font-weight: 700;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
     }
 
-    input,
-    textarea {
+    input, textarea, select {
       width: 100%;
-      min-height: 46px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
       padding: 12px 14px;
-      font-size: 16px;
-      background: #fff;
+      font-size: 0.95rem;
+      font-family: var(--font);
       color: var(--text);
+      transition: border-color 0.15s, box-shadow 0.15s;
+      min-height: 46px;
     }
 
-    input:focus,
-    textarea:focus {
-      outline: 3px solid rgba(29, 78, 216, 0.14);
-      border-color: var(--brand);
+    input::placeholder, textarea::placeholder {
+      color: var(--muted);
+      opacity: 0.7;
     }
 
-    .jobs-wrap {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
     }
+
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      filter: opacity(0.5);
+      cursor: pointer;
+    }
+
+    textarea { resize: vertical; min-height: 90px; }
+
+    .signature-box { min-height: 80px; font-style: italic; }
+
+    /* ─── Job Rows ────────────────────────────────────────── */
+    .jobs-wrap { display: flex; flex-direction: column; gap: 10px; }
 
     .job-row {
-      border: 1px solid var(--line);
-      border-radius: 16px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
       padding: 14px;
-      background: #fbfdff;
+      position: relative;
+    }
+
+    .job-row-number {
+      position: absolute;
+      top: -10px;
+      left: 14px;
+      background: var(--accent);
+      color: #ffffff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-family: var(--mono);
     }
 
     .job-grid {
       display: grid;
-      grid-template-columns: 1.4fr 0.9fr 0.8fr auto;
+      grid-template-columns: 1.6fr 1fr 0.9fr auto;
       gap: 10px;
       align-items: end;
+      margin-top: 6px;
     }
 
     .adjustment-grid {
       display: grid;
-      grid-template-columns: 1.4fr 0.8fr auto;
+      grid-template-columns: 1.6fr 0.9fr auto;
       gap: 10px;
       align-items: end;
     }
 
+    /* ─── Buttons ─────────────────────────────────────────── */
     .btn-row {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin-top: 16px;
+      margin-top: 14px;
     }
 
     button {
+      font-family: var(--font);
+      font-weight: 600;
+      font-size: 0.88rem;
       border: none;
-      border-radius: 12px;
-      padding: 12px 16px;
-      font-size: 0.96rem;
-      font-weight: 700;
+      border-radius: var(--radius-sm);
+      padding: 10px 18px;
       cursor: pointer;
-      transition: transform 0.05s ease, opacity 0.2s ease;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
 
-    button:active {
-      transform: translateY(1px);
+    button:active { transform: translateY(1px); }
+
+    .btn-add {
+      background: transparent;
+      color: var(--accent);
+      border: 1px dashed var(--border-light);
+      width: 100%;
+      justify-content: center;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: var(--radius-sm);
     }
 
-    .btn-primary {
-      background: var(--brand);
-      color: #fff;
+    .btn-add:hover {
+      background: var(--accent-glow);
+      border-color: var(--accent);
+      border-style: solid;
     }
 
-    .btn-primary:hover {
-      background: var(--brand-dark);
+    .btn-remove {
+      background: var(--danger-bg);
+      color: var(--danger);
+      border: 1px solid rgba(220, 38, 38, 0.15);
+      padding: 10px 14px;
+      font-size: 1rem;
+      min-width: 42px;
+      justify-content: center;
     }
+
+    .btn-remove:hover { background: rgba(220, 38, 38, 0.14); }
+
+    .btn-submit {
+      background: var(--accent);
+      color: #ffffff;
+      padding: 14px 28px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      border-radius: var(--radius-sm);
+      letter-spacing: 0.01em;
+    }
+
+    .btn-submit:hover { background: var(--accent-dark); }
+    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
 
     .btn-secondary {
-      background: #eff6ff;
-      color: var(--brand-dark);
-      border: 1px solid #c7dbff;
+      background: var(--surface2);
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 14px 20px;
     }
 
-    .btn-danger {
-      background: #fef2f2;
-      color: var(--danger);
-      border: 1px solid #fecaca;
-      min-width: 44px;
-      min-height: 46px;
-      padding: 0 12px;
+    .btn-secondary:hover {
+      color: var(--text);
+      border-color: var(--border-light);
     }
 
-    .totals-card {
+    /* ─── Divider ─────────────────────────────────────────── */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 28px 0 20px;
+    }
+
+    .section-divider-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .section-divider-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ─── Summary Sidebar ─────────────────────────────────── */
+    .summary-card {
       position: sticky;
       top: 20px;
     }
 
-    .summary-list {
-      display: grid;
-      gap: 12px;
+    .summary-header {
+      background: var(--accent);
+      padding: 20px 24px;
+      border-radius: var(--radius) var(--radius) 0 0;
     }
 
-    .summary-item {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      border-bottom: 1px solid var(--line);
-      padding-bottom: 12px;
-      font-size: 0.98rem;
+    .summary-header h2 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #ffffff;
     }
 
-    .summary-item strong:last-child {
-      text-align: right;
-      white-space: nowrap;
+    .summary-header .summary-date {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.75);
+      margin-top: 2px;
+      font-family: var(--mono);
     }
 
-    .summary-total {
-      background: #f0fdf4;
-      border: 1px solid #bbf7d0;
-      color: #14532d;
-      border-radius: 14px;
-      padding: 15px 14px;
+    .summary-body { padding: 20px 24px; }
+
+    .summary-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 8px;
-      font-size: 1.08rem;
-      font-weight: 800;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.88rem;
     }
 
-    .signature-box {
-      min-height: 120px;
-      resize: vertical;
+    .summary-row:last-child { border-bottom: none; }
+
+    .summary-label { color: var(--muted); }
+
+    .summary-value {
+      font-weight: 600;
+      font-family: var(--mono);
+      color: var(--text);
     }
 
+    .summary-total-box {
+      background: var(--accent-glow);
+      border: 1px solid rgba(37, 99, 235, 0.2);
+      border-radius: var(--radius-sm);
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 16px;
+    }
+
+    .summary-total-label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+    }
+
+    .summary-total-value {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--accent);
+      font-family: var(--mono);
+    }
+
+    /* ─── Footer Actions ──────────────────────────────────── */
     .footer-actions {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin-top: 18px;
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
     }
 
-    /* ─── Honeypot Traps (never visible to real users) ───── */
+    /* ─── Messages ────────────────────────────────────────── */
+    #formMessage {
+      display: none;
+      padding: 16px 20px;
+      border-radius: var(--radius-sm);
+      font-size: 0.92rem;
+      margin-top: 16px;
+      line-height: 1.5;
+    }
+
+    /* ─── Honeypot ────────────────────────────────────────── */
     .hp-field {
       opacity: 0;
       position: absolute;
-      top: 0;
-      left: 0;
-      height: 0;
-      width: 0;
+      top: 0; left: 0;
+      height: 0; width: 0;
       z-index: -1;
       pointer-events: none;
       overflow: hidden;
     }
 
+    /* ─── Responsive ──────────────────────────────────────── */
     @media (max-width: 900px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
-
-      .totals-card {
-        position: static;
-      }
+      .layout { grid-template-columns: 1fr; }
+      .summary-card { position: static; }
     }
 
-    @media (max-width: 720px) {
-      body {
-        padding: 12px;
-      }
-
-      .card-body {
-        padding: 16px;
-      }
-
-      .form-grid,
-      .job-grid,
-      .adjustment-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .job-row {
-        padding: 12px;
-      }
-
-      .btn-danger,
-      .footer-actions button,
-      .btn-row button {
-        width: 100%;
-      }
+    @media (max-width: 640px) {
+      body { padding: 16px 14px 32px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .job-grid { grid-template-columns: 1fr; }
+      .adjustment-grid { grid-template-columns: 1fr; }
+      .card-body { padding: 16px; }
+      .card-header { padding: 16px; }
+      .btn-remove { width: 100%; }
     }
 
     @media print {
-      body {
-        background: white;
-        padding: 0;
-      }
-
-      .grid {
-        grid-template-columns: 1fr;
-      }
-
-      .card {
-        box-shadow: none;
-      }
-
-      .btn-row,
-      .footer-actions,
-      .btn-danger {
-        display: none !important;
-      }
+      body { background: white; color: black; padding: 0; }
+      .layout { grid-template-columns: 1fr; }
+      .card { background: white; border: 1px solid #ccc; box-shadow: none; }
+      .btn-row, .footer-actions, .btn-remove, .btn-add { display: none !important; }
+      .card-header { background: #f5f5f5; }
+      label { color: #555; }
+      .summary-header { background: #222; }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="grid">
 
-      <!-- Main Form -->
+    <!-- Header -->
+    <div class="header">
+      <div class="header-sub">Contractor Invoice Submission Portal</div>
+    </div>
+
+    <div class="layout">
+
+      <!-- Main Form Column -->
       <div>
-        <form id="invoiceForm" class="card" action="https://api.web3forms.com/submit" method="POST">
+        <form id="invoiceForm">
 
-          <!-- ─── Spam Protection: Honeypot Fields ─────────────
-               Completely hidden from real users via CSS.
-               Bots that auto-fill all inputs will be blocked.
-          ──────────────────────────────────────────────────── -->
-
-          <!-- Trap 1: classic field bots auto-fill -->
+          <!-- Honeypot Traps -->
           <div class="hp-field" aria-hidden="true">
             <label for="website">Website</label>
             <input type="text" id="website" name="website" value="" autocomplete="off" tabindex="-1" />
           </div>
-
-          <!-- Trap 2: looks like a real confirmation field to bots -->
           <div class="hp-field" aria-hidden="true">
             <label for="email_confirm">Confirm Email</label>
             <input type="email" id="email_confirm" name="email_confirm" value="" autocomplete="off" tabindex="-1" />
           </div>
-
-          <!-- Trap 3: bots fill any tel field they find -->
           <div class="hp-field" aria-hidden="true">
             <label for="phone">Phone</label>
             <input type="tel" id="phone" name="phone" value="" autocomplete="off" tabindex="-1" />
           </div>
-
-          <!-- Trap 4: bots target textareas for injection -->
           <div class="hp-field" aria-hidden="true">
             <label for="comments">Comments</label>
             <textarea id="comments" name="comments" autocomplete="off" tabindex="-1"></textarea>
           </div>
 
-          <!-- Trap 5: timing token — bots submit instantly -->
-          <input type="hidden" id="formLoadTime" name="form_load_time" value="" />
+          <!-- Hidden Web3Forms Fields -->
+          <input type="hidden" name="access_key"  value="f2b45181-f4ed-4970-b47e-d597b5fa862d" />
+          <input type="hidden" id="messageInput"  name="message" value="" />
+          <input type="hidden" id="subjectInput"  name="subject" value="New Octomaids Invoice Submission" />
+          <input type="hidden" name="redirect"    value="false" />
 
-          <!-- Contractor Information -->
-          <div class="card-body">
-            <h2 class="section-title">Contractor Information</h2>
-            <p class="subtle">Fill out the details below, then add each job cleaned during the invoice period.</p>
-
-            <div class="form-grid">
-              <div class="field">
-                <label for="contractorName">Contractor Name</label>
-                <input id="contractorName" name="01. Contractor Name" type="text" placeholder="Enter contractor name" required />
+          <!-- Step 1: Contractor Info -->
+          <div class="card" style="margin-bottom: 16px;">
+            <div class="card-header">
+              <div class="step-badge">1</div>
+              <div class="card-header-text">
+                <h2>Contractor Information</h2>
+                <p>Your personal and contact details</p>
               </div>
-
-              <div class="field">
-                <label for="companyName">Company Name</label>
-                <input id="companyName" name="02. Company Name" type="text" placeholder="Enter company name" />
+            </div>
+            <div class="card-body">
+              <div class="form-grid">
+                <div class="field">
+                  <label for="contractorName">Contractor Name</label>
+                  <input id="contractorName" name="01. Contractor Name" type="text" placeholder="Your full name" required />
+                </div>
+                <div class="field">
+                  <label for="companyName">Company Name</label>
+                  <input id="companyName" name="02. Company Name" type="text" placeholder="Your company (optional)" />
+                </div>
+                <div class="field full">
+                  <label for="invoiceEmail">Your Email Address</label>
+                  <input id="invoiceEmail" name="email" type="email" placeholder="you@example.com — a copy will be sent here" required />
+                </div>
               </div>
-
-              <div class="field full">
-                <label for="invoiceEmail">Contractor Email</label>
-                <input id="invoiceEmail" name="email" type="email" placeholder="name@example.com" required />
-              </div>
-
-              <!-- Web3Forms access key -->
-              <input type="hidden" name="access_key" value="f2b45181-f4ed-4970-b47e-d597b5fa862d" />
-
-              <!-- Single message field — displayed as one clean block -->
-              <input type="hidden" id="messageInput" name="message" value="" />
-
-              <!-- Web3Forms: set the email subject line -->
-              <input type="hidden" id="subjectInput" name="subject" value="New Octomaids Invoice Submission" />
-
-              <!-- Web3Forms: disable their default thank you page -->
-              <input type="hidden" name="redirect" value="false" />
             </div>
           </div>
 
-          <!-- Jobs Completed -->
-          <div class="card-body" style="border-top: 1px solid var(--line);">
-            <h2 class="section-title">Jobs Completed</h2>
-            <p class="subtle">Add one row for each job. Customer totals are added automatically.</p>
-            <div id="jobsWrap" class="jobs-wrap"></div>
-            <div class="btn-row">
-              <button type="button" class="btn-primary" id="addJobBtn">+ Add Another Job</button>
+          <!-- Step 2: Jobs -->
+          <div class="card" style="margin-bottom: 16px;">
+            <div class="card-header">
+              <div class="step-badge">2</div>
+              <div class="card-header-text">
+                <h2>Jobs Completed</h2>
+                <p>Add one row for each cleaning job — totals calculate automatically</p>
+              </div>
+            </div>
+            <div class="card-body">
+              <div id="jobsWrap" class="jobs-wrap"></div>
+              <button type="button" class="btn-add" id="addJobBtn">＋ Add Another Job</button>
             </div>
           </div>
 
-          <!-- Adjustments -->
-          <div class="card-body" style="border-top: 1px solid var(--line);">
-            <h2 class="section-title">Adjustments</h2>
-            <div class="form-grid">
+          <!-- Step 3: Adjustments -->
+          <div class="card" style="margin-bottom: 16px;">
+            <div class="card-header">
+              <div class="step-badge">3</div>
+              <div class="card-header-text">
+                <h2>Adjustments</h2>
+                <p>Add tips received and any job cancellations</p>
+              </div>
+            </div>
+            <div class="card-body">
 
-              <div class="field full">
-                <label>Tips</label>
-                <div id="tipsWrap" class="jobs-wrap"></div>
-                <div class="btn-row">
-                  <button type="button" class="btn-primary" id="addTipBtn">+ Add Tip Entry</button>
+              <div class="section-divider">
+                <span class="section-divider-label">Tips</span>
+                <div class="section-divider-line"></div>
+              </div>
+              <div id="tipsWrap" class="jobs-wrap"></div>
+              <button type="button" class="btn-add" id="addTipBtn">＋ Add Tip Entry</button>
+
+              <div class="section-divider">
+                <span class="section-divider-label">Job Cancellations</span>
+                <div class="section-divider-line"></div>
+              </div>
+              <div id="cancellationsWrap" class="jobs-wrap"></div>
+              <button type="button" class="btn-add" id="addCancellationBtn">＋ Add Cancellation Entry</button>
+
+            </div>
+          </div>
+
+          <!-- Step 4: Notes & Signature -->
+          <div class="card">
+            <div class="card-header">
+              <div class="step-badge">4</div>
+              <div class="card-header-text">
+                <h2>Notes &amp; Signature</h2>
+                <p>Any additional information and your sign-off</p>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="form-grid">
+                <div class="field full">
+                  <label for="notes">Notes</label>
+                  <textarea id="notes" name="13. Notes" placeholder="Any additional information for this invoice period..."></textarea>
+                </div>
+                <div class="field full">
+                  <label for="signature">Signature — Type your full name</label>
+                  <input id="signature" name="14. Signature" type="text" class="signature-box" placeholder="Type your full name as your signature" />
                 </div>
               </div>
 
-              <div class="field full">
-                <label>Job Cancellations</label>
-                <div id="cancellationsWrap" class="jobs-wrap"></div>
-                <div class="btn-row">
-                  <button type="button" class="btn-primary" id="addCancellationBtn">+ Add Cancellation Entry</button>
-                </div>
+              <div class="footer-actions">
+                <button type="submit"  class="btn-submit"    id="submitBtn">Submit Invoice →</button>
+                <button type="button"  class="btn-secondary" id="printBtn">🖨 Print / Save PDF</button>
+                <button type="reset"   class="btn-secondary">↺ Clear Form</button>
               </div>
 
-              <div class="field full">
-                <label for="notes">Notes</label>
-                <textarea id="notes" name="13. Notes" rows="4" placeholder="Add any notes here..."></textarea>
-              </div>
-
-              <div class="field full">
-                <label for="signature">Signature</label>
-                <textarea id="signature" name="14. Signature" class="signature-box" placeholder="Type full name as signature"></textarea>
-              </div>
+              <div id="formMessage"></div>
             </div>
-
-            <div class="footer-actions">
-              <button type="submit"  class="btn-primary"   id="submitBtn">Submit Invoice</button>
-              <button type="button"  class="btn-secondary" id="printBtn">Print / Save as PDF</button>
-              <button type="reset"   class="btn-secondary">Clear Form</button>
-            </div>
-
-            <div id="formMessage" class="subtle" style="display: none; margin-top: 14px;"></div>
           </div>
 
         </form>
       </div>
 
-      <!-- Invoice Summary Sidebar -->
-      <aside class="card totals-card">
-        <div class="card-body">
-          <h2 class="section-title">Invoice Summary</h2>
-          <div class="summary-list">
-            <div class="summary-item">
-              <strong>Total Jobs</strong>
-              <strong id="jobCount">0</strong>
+      <!-- Summary Sidebar -->
+      <aside class="summary-card">
+        <div class="card">
+          <div class="summary-header">
+            <h2>Invoice Summary</h2>
+            <div class="summary-date" id="summaryDate"></div>
+          </div>
+          <div class="summary-body">
+            <div class="summary-row">
+              <span class="summary-label">Total Jobs</span>
+              <span class="summary-value" id="jobCount">0</span>
             </div>
-            <div class="summary-item">
-              <strong>Total for All Jobs</strong>
-              <strong id="totalJobs">$0.00</strong>
+            <div class="summary-row">
+              <span class="summary-label">Total for All Jobs</span>
+              <span class="summary-value" id="totalJobs">$0.00</span>
             </div>
-            <div class="summary-item">
-              <strong>Total 60%</strong>
-              <strong id="totalSixty">$0.00</strong>
+            <div class="summary-row">
+              <span class="summary-label">Total 60%</span>
+              <span class="summary-value" id="totalSixty">$0.00</span>
             </div>
-            <div class="summary-item">
-              <strong>Total Tips</strong>
-              <strong id="totalTips">$0.00</strong>
+            <div class="summary-row">
+              <span class="summary-label">Total Tips</span>
+              <span class="summary-value" id="totalTips">$0.00</span>
             </div>
-            <div class="summary-item">
-              <strong>Total Cancellations</strong>
-              <strong id="totalCancellations">$0.00</strong>
+            <div class="summary-row">
+              <span class="summary-label">Total Cancellations</span>
+              <span class="summary-value" id="totalCancellations">$0.00</span>
+            </div>
+            <div class="summary-total-box">
+              <span class="summary-total-label">Final Total</span>
+              <span class="summary-total-value" id="finalTotal">$0.00</span>
             </div>
           </div>
-          <div class="summary-total">
-            <span>Final Total</span>
-            <span id="finalTotal">$0.00</span>
-          </div>
+        </div>
+
+        <!-- Help tip -->
+        <div style="margin-top:14px; padding:14px 16px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); font-size:0.82rem; color:var(--muted); line-height:1.6;">
+          💡 <strong style="color:var(--text);">Tip:</strong> The summary updates automatically as you fill in your jobs. Review before submitting.
         </div>
       </aside>
 
@@ -469,15 +626,18 @@
 
   <script>
   document.addEventListener('DOMContentLoaded', function () {
-    var PAY_RATE = 0.60;
 
-    /* ─── Spam Protection ─────────────────────────────────── */
-    var MINIMUM_FILL_SECONDS = 5;
+    /* ─── Constants ───────────────────────────────────────── */
+    var PAY_RATE = 0.60;
     var HONEYPOT_FIELDS = ['website', 'email_confirm', 'phone', 'comments'];
 
-    /* Stamp load time for timing check */
-    var formLoadTimestamp = Math.floor(Date.now() / 1000);
-    document.getElementById('formLoadTime').value = String(formLoadTimestamp);
+    /* ─── Set today's date in sidebar ────────────────────── */
+    var dateEl = document.getElementById('summaryDate');
+    if (dateEl) {
+      dateEl.textContent = new Date().toLocaleDateString('en-US', {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+      });
+    }
 
     /* ─── DOM References ──────────────────────────────────── */
     var invoiceForm       = document.getElementById('invoiceForm');
@@ -487,7 +647,6 @@
     var submitBtn         = document.getElementById('submitBtn');
     var printBtn          = document.getElementById('printBtn');
     var formMessage       = document.getElementById('formMessage');
-
     var messageInput      = document.getElementById('messageInput');
 
     var jobCountEl            = document.getElementById('jobCount');
@@ -500,64 +659,68 @@
     /* ─── Helpers ─────────────────────────────────────────── */
     function formatCurrency(value) {
       return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD'
+        style: 'currency', currency: 'USD'
       }).format(Number(value) || 0);
     }
 
     /* ─── Success Screen ──────────────────────────────────── */
     function showSuccessMessage() {
-      invoiceForm.style.display = 'none';
+      document.querySelector('.layout').style.display = 'none';
+      var header = document.querySelector('.header');
 
-      var summaryCard = document.querySelector('.totals-card');
-      if (summaryCard) summaryCard.style.display = 'none';
+      var box = document.createElement('div');
+      box.style.cssText = [
+        'max-width:520px',
+        'margin:60px auto',
+        'background:var(--surface)',
+        'border:1px solid var(--success)',
+        'border-radius:var(--radius)',
+        'padding:40px',
+        'text-align:center'
+      ].join(';');
 
-      formMessage.style.display      = 'block';
-      formMessage.style.color        = 'var(--success)';
-      formMessage.style.background   = '#f0fdf4';
-      formMessage.style.border       = '1px solid #bbf7d0';
-      formMessage.style.padding      = '20px';
-      formMessage.style.borderRadius = '14px';
-      formMessage.style.marginTop    = '40px';
-      formMessage.style.fontSize     = '1rem';
-      formMessage.style.lineHeight   = '1.6';
-      formMessage.textContent        = 'Invoice submitted successfully.';
+      box.innerHTML = [
+        '<div style="font-size:3rem;margin-bottom:16px;">✅</div>',
+        '<h2 style="font-size:1.3rem;font-weight:700;color:var(--success);margin-bottom:10px;">Invoice Submitted!</h2>',
+        '<p style="color:var(--muted);font-size:0.95rem;line-height:1.6;">Your invoice has been received successfully. A confirmation copy has been sent to your email address. Thank you!</p>'
+      ].join('');
 
-      var grid = document.querySelector('.grid');
-      if (grid && formMessage.parentElement !== grid) {
-        grid.appendChild(formMessage);
-      }
-
-      formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      header.insertAdjacentElement('afterend', box);
+      box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      sendHeight();
     }
 
-    /* ─── Row Factories ───────────────────────────────────── */
+    /* ─── Job Row Factory ─────────────────────────────────── */
     function createJobRow(data) {
       data = data || {};
+      var index = jobsWrap.querySelectorAll('.job-row').length + 1;
       var row = document.createElement('div');
       row.className = 'job-row';
       row.innerHTML = [
+        '<div class="job-row-number">Job #' + index + '</div>',
         '<div class="job-grid">',
         '  <div class="field">',
         '    <label>Customer Name</label>',
-        '    <input type="text" class="job-customer" placeholder="Customer name" />',
+        '    <input type="text" class="job-customer" placeholder="e.g. John Smith" />',
         '  </div>',
         '  <div class="field">',
         '    <label>Date of Job</label>',
         '    <input type="date" class="job-date" />',
         '  </div>',
         '  <div class="field">',
-        '    <label>Total</label>',
+        '    <label>Job Total ($)</label>',
         '    <input type="number" class="job-amount" min="0" step="0.01" placeholder="0.00" />',
         '  </div>',
-        '  <button type="button" class="btn-danger remove-job">Remove</button>',
+        '  <div class="field">',
+        '    <label style="opacity:0;">Remove</label>',
+        '    <button type="button" class="btn-remove remove-job">✕</button>',
+        '  </div>',
         '</div>'
       ].join('');
 
       var customerInput = row.querySelector('.job-customer');
       var dateInput     = row.querySelector('.job-date');
       var amountInput   = row.querySelector('.job-amount');
-      var removeBtn     = row.querySelector('.remove-job');
 
       if (data.customer) customerInput.value = data.customer;
       if (data.date)     dateInput.value     = data.date;
@@ -568,8 +731,9 @@
         input.addEventListener('change', updateTotals);
       });
 
-      removeBtn.addEventListener('click', function () {
+      row.querySelector('.remove-job').addEventListener('click', function () {
         row.remove();
+        renumberJobRows();
         updateTotals();
       });
 
@@ -577,10 +741,16 @@
       updateTotals();
     }
 
+    function renumberJobRows() {
+      jobsWrap.querySelectorAll('.job-row-number').forEach(function (el, i) {
+        el.textContent = 'Job #' + (i + 1);
+      });
+    }
+
+    /* ─── Adjustment Row Factory ──────────────────────────── */
     function createAdjustmentRow(type, data) {
       data = data || {};
       var container = type === 'tip' ? tipsWrap : cancellationsWrap;
-
       var row = document.createElement('div');
       row.className = 'job-row adjustment-row';
       row.dataset.adjustmentType = type;
@@ -588,19 +758,21 @@
         '<div class="adjustment-grid">',
         '  <div class="field">',
         '    <label>Customer Name</label>',
-        '    <input type="text" class="adj-customer" placeholder="Customer name" />',
+        '    <input type="text" class="adj-customer" placeholder="e.g. John Smith" />',
         '  </div>',
         '  <div class="field">',
-        '    <label>Amount</label>',
+        '    <label>Amount ($)</label>',
         '    <input type="number" class="adj-amount" min="0" step="0.01" placeholder="0.00" />',
         '  </div>',
-        '  <button type="button" class="btn-danger remove-adj">Remove</button>',
+        '  <div class="field">',
+        '    <label style="opacity:0;">Remove</label>',
+        '    <button type="button" class="btn-remove remove-adj">✕</button>',
+        '  </div>',
         '</div>'
       ].join('');
 
       var customerInput = row.querySelector('.adj-customer');
       var amountInput   = row.querySelector('.adj-amount');
-      var removeBtn     = row.querySelector('.remove-adj');
 
       if (data.customer) customerInput.value = data.customer;
       if (data.amount !== undefined) amountInput.value = data.amount;
@@ -610,7 +782,7 @@
         input.addEventListener('change', updateTotals);
       });
 
-      removeBtn.addEventListener('click', function () {
+      row.querySelector('.remove-adj').addEventListener('click', function () {
         row.remove();
         updateTotals();
       });
@@ -622,26 +794,24 @@
     /* ─── Data Aggregators ────────────────────────────────── */
     function getJobAmounts() {
       return Array.from(jobsWrap.querySelectorAll('.job-amount'))
-        .map(function (input) { return parseFloat(input.value) || 0; });
+        .map(function (i) { return parseFloat(i.value) || 0; });
     }
 
     function getAdjustmentTotal(type) {
       var container = type === 'tip' ? tipsWrap : cancellationsWrap;
       return Array.from(container.querySelectorAll('.adj-amount'))
-        .map(function (input) { return parseFloat(input.value) || 0; })
-        .reduce(function (sum, val) { return sum + val; }, 0);
+        .map(function (i) { return parseFloat(i.value) || 0; })
+        .reduce(function (s, v) { return s + v; }, 0);
     }
 
     function getNonEmptyJobCount() {
       return Array.from(jobsWrap.querySelectorAll('.job-row')).filter(function (row) {
-        var customer = row.querySelector('.job-customer').value.trim();
-        var date     = row.querySelector('.job-date').value.trim();
-        var amount   = parseFloat(row.querySelector('.job-amount').value) || 0;
-        return customer || date || amount > 0;
+        return row.querySelector('.job-customer').value.trim() ||
+               row.querySelector('.job-date').value.trim() ||
+               (parseFloat(row.querySelector('.job-amount').value) || 0) > 0;
       }).length;
     }
 
-    /* Build plain-text summary for jobs — one line per job */
     function buildJobsSummary() {
       var lines = [];
       Array.from(jobsWrap.querySelectorAll('.job-row')).forEach(function (row, i) {
@@ -649,18 +819,12 @@
         var date     = row.querySelector('.job-date').value.trim();
         var amount   = parseFloat(row.querySelector('.job-amount').value) || 0;
         if (customer || date || amount > 0) {
-          lines.push(
-            (i + 1) + '. ' +
-            (customer || 'No name') + ' | ' +
-            (date     || 'No date') + ' | ' +
-            formatCurrency(amount)
-          );
+          lines.push((i + 1) + '. ' + (customer || 'No name') + ' | ' + (date || 'No date') + ' | ' + formatCurrency(amount));
         }
       });
-      return lines.length ? lines.join('; ') : 'None';
+      return lines.length ? lines.join('\n') : 'None';
     }
 
-    /* Build plain-text summary for tips or cancellations */
     function buildAdjustmentSummary(type) {
       var container = type === 'tip' ? tipsWrap : cancellationsWrap;
       var lines = [];
@@ -668,34 +832,27 @@
         var customer = row.querySelector('.adj-customer').value.trim();
         var amount   = parseFloat(row.querySelector('.adj-amount').value) || 0;
         if (customer || amount > 0) {
-          lines.push(
-            (i + 1) + '. ' +
-            (customer || 'No name') + ' | ' +
-            formatCurrency(amount)
-          );
+          lines.push((i + 1) + '. ' + (customer || 'No name') + ' | ' + formatCurrency(amount));
         }
       });
-      return lines.length ? lines.join('; ') : 'None';
+      return lines.length ? lines.join('\n') : 'None';
     }
 
     /* ─── Totals Updater ──────────────────────────────────── */
     function updateTotals() {
-      var totalJobs        = getJobAmounts().reduce(function (s, v) { return s + v; }, 0);
-      var totalSixty       = totalJobs * PAY_RATE;
-      var totalTips        = getAdjustmentTotal('tip');
-      var totalCancels     = getAdjustmentTotal('cancellation');
-      var finalTotal       = totalSixty + totalTips + totalCancels;
-      var nonEmptyJobCount = getNonEmptyJobCount();
+      var totalJobs    = getJobAmounts().reduce(function (s, v) { return s + v; }, 0);
+      var totalSixty   = totalJobs * PAY_RATE;
+      var totalTips    = getAdjustmentTotal('tip');
+      var totalCancels = getAdjustmentTotal('cancellation');
+      var finalTotal   = totalSixty + totalTips + totalCancels;
 
-      /* Update sidebar */
-      jobCountEl.textContent           = String(nonEmptyJobCount);
+      jobCountEl.textContent           = String(getNonEmptyJobCount());
       totalJobsEl.textContent          = formatCurrency(totalJobs);
       totalSixtyEl.textContent         = formatCurrency(totalSixty);
       totalTipsEl.textContent          = formatCurrency(totalTips);
       totalCancellationsEl.textContent = formatCurrency(totalCancels);
       finalTotalEl.textContent         = formatCurrency(finalTotal);
 
-      /* Update email subject with contractor name if available */
       var contractorName = document.getElementById('contractorName').value.trim();
       document.getElementById('subjectInput').value = contractorName
         ? 'New Octomaids Invoice - ' + contractorName
@@ -703,12 +860,13 @@
     }
 
     /* ─── Event Listeners ─────────────────────────────────── */
-    document.getElementById('addJobBtn').addEventListener('click', function () { createJobRow(); });
-    document.getElementById('addTipBtn').addEventListener('click', function () { createAdjustmentRow('tip'); });
-    document.getElementById('addCancellationBtn').addEventListener('click', function () { createAdjustmentRow('cancellation'); });
+    document.getElementById('addJobBtn').addEventListener('click', function () { createJobRow(); sendHeight(); });
+    document.getElementById('addTipBtn').addEventListener('click', function () { createAdjustmentRow('tip'); sendHeight(); });
+    document.getElementById('addCancellationBtn').addEventListener('click', function () { createAdjustmentRow('cancellation'); sendHeight(); });
 
     ['contractorName', 'companyName', 'invoiceEmail', 'notes', 'signature'].forEach(function (id) {
-      document.getElementById(id).addEventListener('input', updateTotals);
+      var el = document.getElementById(id);
+      if (el) el.addEventListener('input', updateTotals);
     });
 
     printBtn.addEventListener('click', function () { window.print(); });
@@ -717,41 +875,32 @@
     invoiceForm.addEventListener('submit', function (e) {
       e.preventDefault();
 
-      /* Honeypot check — trap fields must be empty */
+      /* Honeypot check */
       var spamDetected = false;
-      HONEYPOT_FIELDS.forEach(function (fieldName) {
-        var field = document.querySelector('[name="' + fieldName + '"]');
+      HONEYPOT_FIELDS.forEach(function (name) {
+        var field = document.querySelector('[name="' + name + '"]');
         if (field && field.value.trim() !== '') spamDetected = true;
       });
+      if (spamDetected) { showSuccessMessage(); return; }
 
-      /* Timing check — reject instant bot submissions */
-      var elapsed = Math.floor(Date.now() / 1000) - formLoadTimestamp;
-      if (elapsed < MINIMUM_FILL_SECONDS) spamDetected = true;
-
-      if (spamDetected) {
-        showSuccessMessage();
-        return;
-      }
-
-      /* ── Build single clean message block ────────────────── */
+      /* Build message */
       updateTotals();
 
-      var cn   = document.getElementById('contractorName').value.trim() || 'Not provided';
-      var co   = document.getElementById('companyName').value.trim()    || 'Not provided';
-      var em   = document.getElementById('invoiceEmail').value.trim()   || 'Not provided';
-      var nt   = document.getElementById('notes').value.trim()          || 'None';
-      var sig  = document.getElementById('signature').value.trim()      || 'Not provided';
+      var cn  = document.getElementById('contractorName').value.trim() || 'Not provided';
+      var co  = document.getElementById('companyName').value.trim()    || 'Not provided';
+      var em  = document.getElementById('invoiceEmail').value.trim()   || 'Not provided';
+      var nt  = document.getElementById('notes').value.trim()          || 'None';
+      var sig = document.getElementById('signature').value.trim()      || 'Not provided';
 
-      var totalJobs   = getJobAmounts().reduce(function (s, v) { return s + v; }, 0);
-      var totalSixty  = totalJobs * PAY_RATE;
-      var totalTips   = getAdjustmentTotal('tip');
+      var totalJobs    = getJobAmounts().reduce(function (s, v) { return s + v; }, 0);
+      var totalSixty   = totalJobs * PAY_RATE;
+      var totalTips    = getAdjustmentTotal('tip');
       var totalCancels = getAdjustmentTotal('cancellation');
-      var finalTotal  = totalSixty + totalTips + totalCancels;
-      var jobCount    = getNonEmptyJobCount();
+      var finalTotal   = totalSixty + totalTips + totalCancels;
 
       var message = [
         '========================================',
-        '         OCTOMAIDS CONTRACTOR INVOICE   ',
+        '      OCTOMAIDS CONTRACTOR INVOICE      ',
         '========================================',
         '',
         'Contractor Name:    ' + cn,
@@ -761,22 +910,22 @@
         '----------------------------------------',
         'JOBS COMPLETED',
         '----------------------------------------',
-        buildJobsSummary().split('; ').join('\n'),
+        buildJobsSummary(),
         '',
         '----------------------------------------',
         'TIPS',
         '----------------------------------------',
-        buildAdjustmentSummary('tip').split('; ').join('\n'),
+        buildAdjustmentSummary('tip'),
         '',
         '----------------------------------------',
         'CANCELLATIONS',
         '----------------------------------------',
-        buildAdjustmentSummary('cancellation').split('; ').join('\n'),
+        buildAdjustmentSummary('cancellation'),
         '',
         '----------------------------------------',
         'TOTALS',
         '----------------------------------------',
-        'Total Jobs:          ' + jobCount,
+        'Total Jobs:          ' + getNonEmptyJobCount(),
         'Total for All Jobs:  ' + formatCurrency(totalJobs),
         'Total 60%:           ' + formatCurrency(totalSixty),
         'Total Tips:          ' + formatCurrency(totalTips),
@@ -791,47 +940,45 @@
 
       messageInput.value = message;
 
-      /* ── Submit to Web3Forms as JSON ─────────────────────── */
       submitBtn.disabled    = true;
-      submitBtn.textContent = 'Submitting...';
-
-      var contractorEmail = document.getElementById('invoiceEmail').value.trim();
-      var contractorName  = document.getElementById('contractorName').value.trim();
+      submitBtn.textContent = 'Submitting…';
 
       var payload = {
-        access_key:  'f2b45181-f4ed-4970-b47e-d597b5fa862d',
-        subject:     contractorName ? 'New Octomaids Invoice - ' + contractorName : 'New Octomaids Invoice Submission',
-        from_name:   'Octomaids Invoice',
-        email:       contractorEmail,
-        message:     messageInput.value,
-        redirect:    'false'
+        access_key: 'f2b45181-f4ed-4970-b47e-d597b5fa862d',
+        subject:    document.getElementById('subjectInput').value,
+        from_name:  'Octomaids Invoice',
+        email:      em,
+        message:    message,
+        redirect:   'false'
       };
 
       fetch('https://api.web3forms.com/submit', {
         method:  'POST',
         body:    JSON.stringify(payload),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept':       'application/json'
-        }
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
       })
       .then(function (response) {
         return response.json().then(function (data) {
           if (response.ok && data.success) {
             showSuccessMessage();
           } else {
-            var errorMsg = (data && data.message) ? data.message : 'Unknown error (status ' + response.status + ')';
-            throw new Error(errorMsg);
+            throw new Error((data && data.message) ? data.message : 'Submission failed');
           }
         });
       })
       .catch(function (err) {
         console.error('Web3Forms error:', err);
         submitBtn.disabled    = false;
-        submitBtn.textContent = 'Submit Invoice';
-        formMessage.style.display = 'block';
-        formMessage.style.color   = 'var(--danger)';
-        formMessage.textContent   = 'Error: ' + err.message;
+        submitBtn.textContent = 'Submit Invoice →';
+        formMessage.style.display      = 'block';
+        formMessage.style.color        = 'var(--danger)';
+        formMessage.style.background   = 'var(--danger-bg)';
+        formMessage.style.border       = '1px solid rgba(248,113,113,0.3)';
+        formMessage.style.padding      = '14px 18px';
+        formMessage.style.borderRadius = 'var(--radius-sm)';
+        formMessage.textContent        = '⚠️ Your invoice could not be submitted. Please check your internet connection and try again. If this continues, contact Octomaids directly.';
+        formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        sendHeight();
       });
     });
 
@@ -846,6 +993,7 @@
         createAdjustmentRow('tip');
         createAdjustmentRow('cancellation');
         updateTotals();
+        sendHeight();
       }, 0);
     });
 
@@ -858,19 +1006,14 @@
 
   }); // end DOMContentLoaded
 
-  /* ─── Auto-resize: tells the WordPress iframe to match our height ── */
+  /* ─── iframe Auto-Resize ──────────────────────────────── */
   function sendHeight() {
-    var height = document.body.scrollHeight;
-    window.parent.postMessage({ frameHeight: height }, '*');
+    window.parent.postMessage({ frameHeight: document.body.scrollHeight }, '*');
   }
 
-  /* Send height on load and whenever content changes */
   window.addEventListener('load', sendHeight);
   window.addEventListener('resize', sendHeight);
-
-  /* Also watch for DOM changes (e.g. adding job rows) */
-  var resizeObserver = new ResizeObserver(sendHeight);
-  resizeObserver.observe(document.body);
+  new ResizeObserver(sendHeight).observe(document.body);
 
   </script>
 </body>
