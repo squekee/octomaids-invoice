@@ -474,7 +474,7 @@
           <input type="hidden" name="access_key"  value="f2b45181-f4ed-4970-b47e-d597b5fa862d" />
           <input type="hidden" id="messageInput"  name="message" value="" />
           <input type="hidden" id="subjectInput"  name="subject" value="New Octomaids Invoice Submission" />
-          <input type="hidden" name="redirect"    value="false" />
+          <input type="hidden" name="redirect"    value="https://squekee.github.io/octomaids-invoice/thankyou.html" />
 
           <!-- Step 1: Contractor Info -->
           <div class="card" style="margin-bottom: 16px;">
@@ -940,46 +940,19 @@
 
       messageInput.value = message;
 
+      /* Update subject field */
+      document.getElementById('subjectInput').value = contractorName
+        ? 'New Octomaids Invoice - ' + contractorName
+        : 'New Octomaids Invoice Submission';
+
       submitBtn.disabled    = true;
       submitBtn.textContent = 'Submitting…';
 
-      var payload = {
-        access_key: 'f2b45181-f4ed-4970-b47e-d597b5fa862d',
-        subject:    document.getElementById('subjectInput').value,
-        from_name:  'Octomaids Invoice',
-        email:      em,
-        message:    message,
-        redirect:   'false'
-      };
-
-      fetch('https://api.web3forms.com/submit', {
-        method:  'POST',
-        body:    JSON.stringify(payload),
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
-      })
-      .then(function (response) {
-        return response.json().then(function (data) {
-          if (response.ok && data.success) {
-            showSuccessMessage();
-          } else {
-            throw new Error((data && data.message) ? data.message : 'Submission failed');
-          }
-        });
-      })
-      .catch(function (err) {
-        console.error('Web3Forms error:', err);
-        submitBtn.disabled    = false;
-        submitBtn.textContent = 'Submit Invoice →';
-        formMessage.style.display      = 'block';
-        formMessage.style.color        = 'var(--danger)';
-        formMessage.style.background   = 'var(--danger-bg)';
-        formMessage.style.border       = '1px solid rgba(248,113,113,0.3)';
-        formMessage.style.padding      = '14px 18px';
-        formMessage.style.borderRadius = 'var(--radius-sm)';
-        formMessage.textContent        = '⚠️ Your invoice could not be submitted. Please check your internet connection and try again. If this continues, contact Octomaids directly.';
-        formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        sendHeight();
-      });
+      /* Use standard form POST — most reliable across all browsers and networks */
+      var form = document.getElementById('invoiceForm');
+      form.action = 'https://api.web3forms.com/submit';
+      form.method = 'POST';
+      form.submit();
     });
 
     /* ─── Reset Handler ───────────────────────────────────── */
