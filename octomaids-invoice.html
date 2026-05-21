@@ -452,22 +452,22 @@
       <div>
         <form id="invoiceForm">
 
-          <!-- Honeypot Traps -->
+          <!-- Honeypot Traps — disabled so they never appear in submissions -->
           <div class="hp-field" aria-hidden="true">
             <label for="website">Website</label>
-            <input type="text" id="website" name="website" value="" autocomplete="off" tabindex="-1" />
+            <input type="text" id="website" name="website" value="" autocomplete="off" tabindex="-1" disabled />
           </div>
           <div class="hp-field" aria-hidden="true">
             <label for="email_confirm">Confirm Email</label>
-            <input type="email" id="email_confirm" name="email_confirm" value="" autocomplete="off" tabindex="-1" />
+            <input type="email" id="email_confirm" name="email_confirm" value="" autocomplete="off" tabindex="-1" disabled />
           </div>
           <div class="hp-field" aria-hidden="true">
             <label for="phone">Phone</label>
-            <input type="tel" id="phone" name="phone" value="" autocomplete="off" tabindex="-1" />
+            <input type="tel" id="phone" name="phone" value="" autocomplete="off" tabindex="-1" disabled />
           </div>
           <div class="hp-field" aria-hidden="true">
             <label for="comments">Comments</label>
-            <textarea id="comments" name="comments" autocomplete="off" tabindex="-1"></textarea>
+            <textarea id="comments" name="comments" autocomplete="off" tabindex="-1" disabled></textarea>
           </div>
 
           <!-- Hidden Web3Forms Fields -->
@@ -875,11 +875,15 @@
     invoiceForm.addEventListener('submit', function (e) {
       e.preventDefault();
 
-      /* Honeypot check */
+      /* Honeypot check — temporarily read disabled trap fields */
       var spamDetected = false;
-      HONEYPOT_FIELDS.forEach(function (name) {
-        var field = document.querySelector('[name="' + name + '"]');
-        if (field && field.value.trim() !== '') spamDetected = true;
+      ['website', 'email_confirm', 'phone', 'comments'].forEach(function (id) {
+        var field = document.getElementById(id);
+        if (field) {
+          field.disabled = false;
+          if (field.value.trim() !== '') spamDetected = true;
+          field.disabled = true;
+        }
       });
       if (spamDetected) { showSuccessMessage(); return; }
 
@@ -940,9 +944,9 @@
 
       messageInput.value = message;
 
-      /* Update subject field */
-      document.getElementById('subjectInput').value = contractorName
-        ? 'New Octomaids Invoice - ' + contractorName
+      /* Update subject field using contractor name value */
+      document.getElementById('subjectInput').value = cn !== 'Not provided'
+        ? 'New Octomaids Invoice - ' + cn
         : 'New Octomaids Invoice Submission';
 
       submitBtn.disabled    = true;
