@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Invoice Submitted — Octomaids</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    /* If we are inside an iframe, break out to full page */
+    if (window.top !== window.self) {
+      window.top.location.href = window.location.href;
+    }
+  </script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -29,20 +36,17 @@
       box-shadow: 0 8px 24px rgba(0,0,0,0.06);
     }
 
-    .icon {
-      font-size: 3.5rem;
-      margin-bottom: 20px;
-    }
+    .icon { font-size: 4rem; margin-bottom: 20px; }
 
     h1 {
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       font-weight: 700;
       color: #059669;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     p {
-      font-size: 0.95rem;
+      font-size: 1rem;
       color: #64748b;
       line-height: 1.7;
     }
@@ -54,8 +58,13 @@
     }
 
     .note {
-      font-size: 0.85rem;
+      font-size: 0.88rem;
       color: #94a3b8;
+    }
+
+    @media (max-width: 480px) {
+      .card { padding: 36px 24px; }
+      h1 { font-size: 1.4rem; }
     }
   </style>
 </head>
